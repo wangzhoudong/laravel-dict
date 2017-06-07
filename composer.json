@@ -1,0 +1,32 @@
+{
+    "name": "liweijia/laravel-dict",
+    "description": "丽维家数据字典",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "wangzhoudong",
+            "email": "wangzhoudong@liweijia.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "liweijia/financereceivable": "*"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.liweijia.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "LWJ\\FinanceReceivable\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LWJ\\FinanceReceivable\\Tests\\": "tests/"
+        }
+    }
+}
