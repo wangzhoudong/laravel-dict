@@ -1,32 +1,26 @@
 {
-    "name": "liweijia/laravel-dict",
-    "description": "丽维家数据字典",
+    "name": "wangzd/laravel-dict",
+    "description": "Config配置管理",
+    "email": "wangzhoudong@foxmail.com",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "wangzhoudong",
-            "email": "wangzhoudong@liweijia.com"
+            "name": "wangzhouodng",
+            "email": "wangzhoudong@foxmail.com"
         }
     ],
-    "minimum-stability": "stable",
     "require": {
-        "liweijia/financereceivable": "*"
+        "php":">=5.5.0",
+        "ext-openssl": "*",
+        "pimple/pimple": "~3.0",
+        "guzzlehttp/guzzle": "~6.1"
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://packages.liweijia.com"
-        }
-    ],
+    "require-dev" : {
+        "phpunit/phpunit": "~4.0"
+    },
+    "minimum-stability": "stable",
     "autoload": {
-        "psr-4": {
-            "LWJ\\FinanceReceivable\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "LWJ\\FinanceReceivable\\Tests\\": "tests/"
-        }
+        "psr-4": {"Dict\\": "src/"}
     }
 }
