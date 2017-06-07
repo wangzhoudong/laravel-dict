@@ -10,7 +10,7 @@
  *
  */
 
-namespace LWJ\Dict\Models;
+namespace Wangzd\Dict\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 

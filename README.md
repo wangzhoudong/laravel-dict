@@ -12,7 +12,7 @@ laravel-dict是一个用于管理系统常用的变量的简单封装.
 ### Laravel应用
 1. 注册 `ServiceProvider`:
 ```php
-LWJ\Dict\DictServiceProvider::class,
+Wangzd\Dict\DictServiceProvider::class,
 ```
 ```
 
@@ -30,7 +30,7 @@ php artisan migrate
 
 5.添加门面到`config/app.php`中的`aliases`部分:
 ```php
-'Dict' => LWJ\WoodFinance\Facades\Dict::class,
+'Dict' => Wangzd\Dict\Facades\Dict::class
 ```
 
 ### Lumen应用

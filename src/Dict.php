@@ -6,11 +6,11 @@
  * Time: 上午10:31
  */
 
-namespace LWJ\Dict;
+namespace Wangzd\Dict;
 
 
-use LWJ\Dict\Contracts\DictInterface;
-use LWJ\Dict\Models\BaseDictionaryOptionModel;
+use Wangzd\Dict\Contracts\DictInterface;
+use Wangzd\Dict\Models\BaseDictionaryOptionModel;
 use Cache;
 class Dict implements DictInterface{
 

@@ -5,10 +5,8 @@
  * Time: 上午10:32
  */
 
-namespace LWJ\Dict\Contracts;
+namespace Wangzd\Dict\Contracts;
 
-
-use Illuminate\Database\Eloquent\Collection;
 
 interface DictInterface
 {

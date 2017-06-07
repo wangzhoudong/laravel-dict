@@ -1,9 +1,9 @@
 <?php
 
-namespace LWJ\Dict;
+namespace Wangzd\Dict;
 
 use Illuminate\Support\ServiceProvider;
-use LWJ\Dict\Contracts\DictInterface;
+use Wangzd\Dict\Contracts\DictInterface;
 
 
 class DictServiceProvider extends ServiceProvider
