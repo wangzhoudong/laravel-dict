@@ -1,6 +1,6 @@
 {
     "name": "wangzd/laravel-dict",
-    "description": "Config配置管理",
+    "description": "laravel-dict是一个用于管理系统常用的配置的简单封装.提高代码的扩展性，可以易读性",
     "email": "wangzhoudong@foxmail.com",
     "type": "library",
     "license": "MIT",
