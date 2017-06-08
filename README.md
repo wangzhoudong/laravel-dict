@@ -4,25 +4,31 @@ laravel-dict是一个用于管理系统常用的变量的简单封装.提高代�
 ## 使用
 
 ###获取配置数组
-    如：Dict::get("global","bool") 返回：[0=>'否',1=>'是']
-    如：Dict::get("order","status") 返回：[0=>'待下单',1=>'待支付',2=>'待发货',3=>'已完成']
+```php
+    Dict::get("global","bool");// 返回：[0=>'否',1=>'是']
+    Dict::get("order","status");// 返回：[0=>'待下单',1=>'待支付',2=>'待发货',3=>'已完成']
+```
 ###获取具体内容    
-    如：Dict::get("global","bool","0") 返回：否
-    如：Dict::get("order","status","1") 返回：待支付
-    使用场景
+```php
+    Dict::get("global","bool","0");// 返回：否
+    Dict::get("order","status","1");// 返回：待支付
+    #使用场景
     foreach($orderList as $order) {
         echo '订单是否删除:' . Dict::get("global","bool",$order['is_del']);//否
         echo '订单状态:' . Dict::get("order","status",$order['status']);//待支付
     }
+```
 ###易读的代码判断
+```php
     Dict::value("order","status","wait_pay"); //等待支付状态 返回：1
     if($orderStatus == Dict::value("order","status","wait_pay") {
         //如果订单状态是待支付    
     }
     
     Dict::valueName("order","status","wait_pay"); 返回 待支付
-    
+```    
 ###方便的HTML操作
+```html
        {{Dict::select("order","status",1,['name'=>'order_status']);}} 
         返回：
         <select name="order_status">
@@ -35,20 +41,25 @@ laravel-dict是一个用于管理系统常用的变量的简单封装.提高代�
         <select name="order_status">
             {{Dict::option("order","status",1,['name'=>'order_status']);}} 
         </select>
-
+```
 ###添加/修改/删除
-    建议直接在数据库维护base_dictionary_option表
-    Dict::add($table_code,$code,$key,$value,$name,$sort=0,$input='');
-    Dict::add('global','bool','yes','0','否');
-    
-    Dict::edit('global','bool',['yes','0','否]);
-    
-    Dict::delete('global','bool');
-###修改
+```php
+    //建议直接在数据库维护base_dictionary_option表
+	#添加
+    Dict::add($table_code,$code,$key,$value,$name,$sort=0,$input='');//obj
+    Dict::add('global','bool','yes','0','否');//obj
+    #修改
+    Dict::edit('global','bool',['yes','0','否]);//bool
+    #删除
+    Dict::delete('global','bool');/bool 
+```
+
     
 ###手动更新缓存
-    如果在数据库添加，需要单独条用该方法
+```php
+    //如果在数据库添加，需要单独条用该方法
     Dict::updateCache();
+```
 ## 安装
 
 使用
