@@ -40,7 +40,9 @@ laravel-dict是一个用于管理系统常用的变量的简单封装.提高代�
     建议直接在数据库维护base_dictionary_option表
     Dict::add($table_code,$code,$key,$value,$name,$sort=0,$input='');
     Dict::add('global','bool','yes','0','否');
+    
     Dict::edit('global','bool',['yes','0','否]);
+    
     Dict::delete('global','bool');
 ###修改
     

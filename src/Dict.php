@@ -43,7 +43,7 @@ class Dict implements DictInterface{
      * @param $edit
      * @return mixed
      */
-    public function update($table_code,$code,$edit) {
+    public function edit($table_code,$code,$edit) {
         $obj = BaseDictionaryOptionModel::where('dictionary_table_code',$table_code)->where('code',$code)->update($edit);
         $this->updateCache();
         return $obj;
@@ -203,32 +203,5 @@ class Dict implements DictInterface{
     public function updateCache() {
         return DictCache::update();
     }
-
-    /**
-     * 获取联动数据
-     * @param $table_code
-     * @param $code
-     */
-    public function linkageData($table_code, $code)
-    {
-        $array = [];
-        $data = BaseDictionaryOptionModel::
-            where("dictionary_table_code", $table_code)
-            ->where("dictionary_code", $code)
-            ->where("key", "")
-            ->orderBy("sort", "DESc")
-            ->get()->toArray();
-        foreach($data AS $key => $item){
-            $array[$key] = $item;
-            $array[$key]['childs'] = BaseDictionaryOptionModel::
-                 where("dictionary_table_code", $table_code)
-                ->where("dictionary_code", $code)
-                ->where("key", $item['value'])
-                ->orderBy("sort", "DESc")
-                ->get()->toArray();
-        }
-        return $array;
-    }
-
 
 }
