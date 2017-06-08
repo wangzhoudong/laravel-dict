@@ -1,7 +1,7 @@
 <?php
 /**
  *------------------------------------------------------
- * FinanceReceivableModel.php
+ * BaseDictionaryOptionModel.php
  *------------------------------------------------------
  *
  * @author    wangzhoudong@foxmail.com
@@ -17,6 +17,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class BaseDictionaryOptionModel extends Model
 {
     use SoftDeletes;
+    /**
+     * 数据表名
+     */
+    protected $table = "base_dictionary_option";
     /**
      * 主键
      */

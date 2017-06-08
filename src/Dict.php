@@ -1,9 +1,13 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Jiangzhiheng
- * Date: 17-1-5
- * Time: 上午10:31
+ *------------------------------------------------------
+    laravel-dict是一个用于管理系统常用的变量的简单封装.提高代码的扩展性，可以易读性
+ *------------------------------------------------------
+ *
+ * @author    wangzhoudong@foxmail.com
+ * @date      2017/05/25 07:34
+ * @version   V1.0
+ *
  */
 
 namespace Wangzd\Dict;
@@ -11,61 +15,89 @@ namespace Wangzd\Dict;
 
 use Wangzd\Dict\Contracts\DictInterface;
 use Wangzd\Dict\Models\BaseDictionaryOptionModel;
-use Cache;
 class Dict implements DictInterface{
 
     public $cacheType;
 
-    private $mmCache = 'table_dictionary_option_all';
-    private $keyDictCache = 'table_dictionary_key_value';
+    /**
+     * @param $table_code 数据字典表
+     * @param $code 数据字典代码
+     * @param $key 程序中使用，数据库使用value
+     * @param $value 编码
+     * @param $name 名称
+     * @param int $sort 排序
+     * @param string $input 输入码，通常用于保留拼音
+     * @return mixed
+     */
+    public function add($table_code,$code,$key,$value,$name,$sort=0,$input='') {
+        $data = ['dictionary_table_code'=>$table_code,'dictionary_code'=>$code,'key'=>$key,'value'=>$value,'name'=>$name,'sort'=>$sort,'input'=>$input];
+        $obj = BaseDictionaryOptionModel::create($data);
+        $this->updateCache();
+        return $obj;
+    }
 
-    private $dict;
-    private $keyDict;
+    /**
+     * 修改
+     * @param $table_code 数据字典表
+     * @param $code 数据字典代码
+     * @param $edit
+     * @return mixed
+     */
+    public function update($table_code,$code,$edit) {
+        $obj = BaseDictionaryOptionModel::where('dictionary_table_code',$table_code)->where('code',$code)->update($edit);
+        $this->updateCache();
+        return $obj;
+    }
+    /**
+     * 删除
+     * @param $table_code 数据字典表
+     * @param $code 数据字典代码
+     * @param $edit
+     * @return mixed
+     */
+    public function delete($table_code,$code) {
+        $obj = BaseDictionaryOptionModel::where('dictionary_table_code',$table_code)->where('code',$code)->delete();
+        $this->updateCache();
+        return $obj;
+    }
+
 
     /**
      * 取得数据字典对应数据
+     * 如：Dict::get("global","bool") 返回：[0=>'否',1=>'是']
+     * 如：Dict::get("global","bool","0") 返回：否
      *
      * @author wangzhoudong
      * @param string $table_code 数据字典的类型
      * @param string $code 数据字典代码
      * @param string $val 数据字典数据对应下标
-     * @return array  返回数据字典数组
+     * @return array|string  返回数据字典数组
      * @throws CException  $table_code,$code 不能为空
      *
      */
 
     public function get($table_code,$code,$val=null) {
-        $mKey = Cache::get($this->mmCache);
-        if(isset($mKey[$table_code][$code])) {
-            $arr =  $mKey[$table_code][$code];
+        $data = DictCache::get('get');
+        if(isset($data[$table_code][$code])) {
+            $arr =  $data[$table_code][$code];
         }else{
-            $this->update($table_code,$code);
-            if(isset($this->dict[$table_code][$code])) {
-                $arr =  $this->dict[$table_code][$code];
-            }else{
-                $arr = [];
-            }
-        }
-        if(!$arr) {
             return null;
         }
         if($val !== null) {
-
             if(array_key_exists($val, $arr)) {
                 return $arr[$val];
             }else{
-                return '';
+                return null;
             }
-        }else{
-            return $arr;
         }
+        return $arr;
     }
 
 
     /**
      * 根据key获取value
-     *
-     * @author xmxtc
+     * Dict::value('global','bool','no') 返回 “0”
+     * @author wangzd
      *
      * @param string $table_code 数据字典的类型
      * @param string $code 数据字典代码
@@ -78,23 +110,33 @@ class Dict implements DictInterface{
 
     public function value($table_code, $code, $key)
     {
-        $mKey = Cache::get($this->keyDictCache);
-
-        if(isset($mKey[$table_code][$code][$key])) {
-            return $mKey[$table_code][$code][$key];
+        $data = DictCache::get('value');
+        if(isset($data[$table_code][$code][$key])) {
+            return $data[$table_code][$code][$key]['value'];
         }
+        return null;
+    }
 
-        $this->update();
-
-        if(isset($this -> keyDict[$table_code][$code][$key])) {
-            return  $this -> keyDict[$table_code][$code][$key];
+    /**
+     * 根据KEy获取名称
+     * Dict::valueName('global','bool','no') 返回 “否”
+     * @param $table_code
+     * @param $code
+     * @param $key
+     * @return string
+     */
+    public function valueName($table_code, $code, $key)
+    {
+        $data = DictCache::get('value');
+        if(isset($data[$table_code][$code][$key])) {
+            return $data[$table_code][$code][$key]['name'];
         }
-        return '';
+        return null;
     }
 
 
     /**
-     *
+     * 根据数据字典生产HTML的select
      * @param string $table_code 数据字典的类型
      * @param string $code 数据字典代码
      * @param string $selection 被选中的值。
@@ -131,6 +173,13 @@ class Dict implements DictInterface{
         return $html;
     }
 
+    /**
+     * 根据数据字典生产HTML的option
+     * @param $table_code
+     * @param $code
+     * @param null $selection  选中的值
+     * @return string
+     */
     public function option($table_code,$code,$selection=null) {
         $data = $this->get($table_code,$code);
         $html = "";
@@ -145,31 +194,14 @@ class Dict implements DictInterface{
     }
 
     /**
-     * 更新对应数据字典，如参数都为空全部更新
+     *  更新缓存
      *
      * @author wangzhoudong
-     * @param string $table_code 需要更新的类型
-     * @param string $code 需要更新的代码
      * @return bool  返回成功失败
      * @throws CException
-     *
      */
-    public function update() {
-        $oData = BaseDictionaryOptionModel::all();
-        $dict = $keyDict = array();
-
-        foreach($oData as $key=>$value) {
-            $dict[$value->dictionary_table_code][$value->dictionary_code][$value->value] = $value->name;
-            $keyDict[$value->dictionary_table_code][$value->dictionary_code][$value->key] = $value->value;
-        }
-
-        $this->dict = $dict;
-        $this->keyDict = $keyDict;
-
-        Cache::forever($this->mmCache,$this->dict);
-        Cache::forever($this->keyDictCache,$this->keyDict);
-
-        return true;
+    public function updateCache() {
+        return DictCache::update();
     }
 
     /**
@@ -198,12 +230,5 @@ class Dict implements DictInterface{
         return $array;
     }
 
-    /**
-     * 清除缓存
-     */
-    public function clear() {
-        Cache::forget($this->mmCache);
-        Cache::forget($this->keyDictCache);
-    }
 
 }

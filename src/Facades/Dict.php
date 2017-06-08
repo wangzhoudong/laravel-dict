@@ -1,4 +1,9 @@
 <?php
+/**
+ * User: Wangzd
+ * Time: 上午10:32
+ */
+
 namespace Wangzd\Dict\Facades;
 
 use Illuminate\Support\Facades\Facade;
