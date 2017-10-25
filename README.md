@@ -63,7 +63,7 @@ laravel-dict是一个用于管理系统常用的配置的简单封装.提高代�
 ## 安装
 
 使用
-`composer require "liweijia/laravel-dict:*"`
+`composer require "wangzd/laravel-dict:*"`
 
 ## 配置
 
@@ -90,22 +90,6 @@ php artisan migrate
 ```php
 'Dict' => Wangzd\Dict\Facades\Dict::class
 ```
-
-### Lumen应用
-
-1. 在`bootstrap/app.php`的 `82` 行左右:
-```php
-$app->register(LWJ\User\DictServiceProvider::class);
-```
-
-2. ENV中支持以下配置
-```php
-DICT_CACHE_ENABLE
-```
-
-3. 如果要使用`config/dict.php`来配置的话,将`vendor/liweijia/dict/src/config.php`拷贝到`config/`,并将文件名改成`dict.php`
-
-
 
 
 ## License
