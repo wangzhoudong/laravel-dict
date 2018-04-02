@@ -1,4 +1,8 @@
 <?php
+namespace Wangzd\Tests\Dict;
+
+use PHPUnit\Framework\Assert as PHPUnit;
+
 /**
  *------------------------------------------------------
 laravel-dict是一个用于管理系统常用的变量的简单封装.提高代码的扩展性，可以易读性
@@ -10,22 +14,22 @@ laravel-dict是一个用于管理系统常用的变量的简单封装.提高代�
  *
  */
 
-class DictTest extends PHPUnit_Framework_TestCase
+class DictTest 
 {
 
     public function testGetArray(){
-        $this->assertArrayHasKey('0',Dict::get('global',"bool"));
+        PHPUnit::assertEquals('0',Dict::get('global',"bool"));
     }
     public function testGetValue(){
-        $this->assertEquals('否',Dict::get('global',"bool",0));
+        PHPUnit::assertEquals('否',Dict::get('global',"bool",0));
     }
 
     public function testValueGet() {
-        $this->assertEquals('0',Dict::get('global',"bool",'no'));
+        PHPUnit::assertEquals('0',Dict::get('global',"bool",'no'));
     }
 
     public function testValueName() {
-        $this->assertEquals('否',Dict::get('global',"bool",'no'));
+        PHPUnit::assertEquals('否',Dict::get('global',"bool",'no'));
     }
 
 }
