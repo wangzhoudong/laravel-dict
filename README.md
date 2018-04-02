@@ -1,4 +1,7 @@
 ## 数据字典
+[![Build Status](https://travis-ci.org/wangzhoudong/laravel-dict.svg?branch=master)](https://travis-ci.org/wangzhoudong/laravel-dict)
+
+
 laravel-dict是一个用于管理系统常用的配置的简单封装.提高代码的扩展性，可以易读性
 
 ## 使用
