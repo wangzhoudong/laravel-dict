@@ -19,7 +19,7 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {"Wangzd\\Dict\\": "src/"}
-    }，
+    },
     "autoload-dev": {
         "psr-4": {
             "Wangzd\\Tests\\Dict\\": "tests/"
