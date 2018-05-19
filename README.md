@@ -71,7 +71,7 @@ laravel-dict是一个用于管理系统常用的配置的简单封装.提高代�
 ## 配置
 
 ### Laravel应用
-1. 注册 `ServiceProvider`:
+1. 注册 `ServiceProvider`(Laravel 5.5+跳过):
 ```php
 Wangzd\Dict\DictServiceProvider::class,
 ```
@@ -89,7 +89,7 @@ php artisan vendor:publish
 php artisan migrate
 ```
 
-5.添加门面到`config/app.php`中的`aliases`部分:
+5.添加门面到`config/app.php`中的`aliases`部分(Laravel 5.5+跳过):
 ```php
 'Dict' => Wangzd\Dict\Facades\Dict::class
 ```
