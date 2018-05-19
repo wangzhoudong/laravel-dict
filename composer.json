@@ -25,4 +25,14 @@
             "Wangzd\\Tests\\Dict\\": "tests/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Wangzd\\Dict\\DictServiceProvider"
+            ],
+            "aliases": {
+                "Dict": "Wangzd\\Dict\\Facades\\Dict"
+            }
+        }
+    }
 }
