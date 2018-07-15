@@ -1,7 +1,7 @@
 <?php
 /**
  *------------------------------------------------------
-    laravel-dict是一个用于管理系统常用的变量的简单封装.提高代码的扩展性，可以易读性
+ * laravel-dict是一个用于管理系统常用的变量的简单封装.提高代码的扩展性，可以易读性
  *------------------------------------------------------
  *
  * @author    wangzhoudong@foxmail.com
@@ -15,7 +15,9 @@ namespace Wangzd\Dict;
 
 use Wangzd\Dict\Contracts\DictInterface;
 use Wangzd\Dict\Models\BaseDictionaryOptionModel;
-class Dict implements DictInterface{
+
+class Dict implements DictInterface
+{
 
     public $cacheType;
 
@@ -29,8 +31,9 @@ class Dict implements DictInterface{
      * @param string $input 输入码，通常用于保留拼音
      * @return mixed
      */
-    public function add($table_code,$code,$key,$value,$name,$sort=0,$input='') {
-        $data = ['dictionary_table_code'=>$table_code,'dictionary_code'=>$code,'key'=>$key,'value'=>$value,'name'=>$name,'sort'=>$sort,'input'=>$input];
+    public function add($table_code, $code, $key, $value, $name, $sort = 0, $input = '')
+    {
+        $data = ['dictionary_table_code' => $table_code, 'dictionary_code' => $code, 'key' => $key, 'value' => $value, 'name' => $name, 'sort' => $sort, 'input' => $input];
         $obj = BaseDictionaryOptionModel::create($data);
         $this->updateCache();
         return $obj;
@@ -43,11 +46,13 @@ class Dict implements DictInterface{
      * @param $edit
      * @return mixed
      */
-    public function edit($table_code,$code,$edit) {
-        $obj = BaseDictionaryOptionModel::where('dictionary_table_code',$table_code)->where('code',$code)->update($edit);
+    public function edit($table_code, $code, $edit)
+    {
+        $obj = BaseDictionaryOptionModel::where('dictionary_table_code', $table_code)->where('code', $code)->update($edit);
         $this->updateCache();
         return $obj;
     }
+
     /**
      * 删除
      * @param $table_code 数据字典表
@@ -55,8 +60,9 @@ class Dict implements DictInterface{
      * @param $edit
      * @return mixed
      */
-    public function delete($table_code,$code) {
-        $obj = BaseDictionaryOptionModel::where('dictionary_table_code',$table_code)->where('code',$code)->delete();
+    public function delete($table_code, $code)
+    {
+        $obj = BaseDictionaryOptionModel::where('dictionary_table_code', $table_code)->where('code', $code)->delete();
         $this->updateCache();
         return $obj;
     }
@@ -76,17 +82,18 @@ class Dict implements DictInterface{
      *
      */
 
-    public function get($table_code,$code,$val=null) {
+    public function get($table_code, $code, $val = null)
+    {
         $data = DictCache::get('get');
-        if(isset($data[$table_code][$code])) {
-            $arr =  $data[$table_code][$code];
-        }else{
+        if (isset($data[$table_code][$code])) {
+            $arr = $data[$table_code][$code];
+        } else {
             return null;
         }
-        if($val !== null) {
-            if(array_key_exists($val, $arr)) {
+        if ($val !== null) {
+            if (array_key_exists($val, $arr)) {
                 return $arr[$val];
-            }else{
+            } else {
                 return null;
             }
         }
@@ -107,14 +114,17 @@ class Dict implements DictInterface{
      *
      *
      */
-
-    public function value($table_code, $code, $key)
+    public function value($table_code, $code, $key = null)
     {
         $data = DictCache::get('value');
-        if(isset($data[$table_code][$code][$key])) {
-            return $data[$table_code][$code][$key]['value'];
+
+        $arr = isset($data[$table_code][$code]) ? $data[$table_code][$code] : null;
+
+        if ($key !== null) {
+            return isset($arr[$key]) ? $arr[$key]['value'] : null;
         }
-        return null;
+
+        return $arr;
     }
 
     /**
@@ -128,7 +138,7 @@ class Dict implements DictInterface{
     public function valueName($table_code, $code, $key)
     {
         $data = DictCache::get('value');
-        if(isset($data[$table_code][$code][$key])) {
+        if (isset($data[$table_code][$code][$key])) {
             return $data[$table_code][$code][$key]['name'];
         }
         return null;
@@ -140,34 +150,35 @@ class Dict implements DictInterface{
      * @param string $table_code 数据字典的类型
      * @param string $code 数据字典代码
      * @param string $selection 被选中的值。
-     * @param array $htmlOptions  额外的HTML属性。如name='cate' ,id='cate'下面两个特定的属性是被认可：
-     * 						      empty: 字符串，指定空选项的文本，它的值为空。
-     * 							       'empty'选项也可以是一个值-标签对形式的数组。
-     * 							                  在一开始每个对都会用于渲染一个列表的选项。注意，
-     *  							       文本标签不会被HTML编码。
+     * @param array $htmlOptions 额外的HTML属性。如name='cate' ,id='cate'下面两个特定的属性是被认可：
+     *                              empty: 字符串，指定空选项的文本，它的值为空。
+     *                                   'empty'选项也可以是一个值-标签对形式的数组。
+     *                                              在一开始每个对都会用于渲染一个列表的选项。注意，
+     *                                   文本标签不会被HTML编码。
      *
      *
      */
-    public function select($table_code, $code, $selection=null, $htmlOptions=array()) {
+    public function select($table_code, $code, $selection = null, $htmlOptions = array())
+    {
         $selectOption = $htmlOptions;
         unset($selectOption['empty']);
         $html = "<select ";
-        foreach($htmlOptions as $key=>$val) {
+        foreach ($htmlOptions as $key => $val) {
             $html .= " $key='$val'";
         }
         $html .= ' >';
-        if (isset ( $htmlOptions ['empty'] )) {
+        if (isset ($htmlOptions ['empty'])) {
             $value = "";
             $label = $htmlOptions ['empty'];
-            if (is_array ( $label )) {
-                $value = array_keys ( $label );
+            if (is_array($label)) {
+                $value = array_keys($label);
                 $value = $value [0];
-                $label = array_values ( $label );
+                $label = array_values($label);
                 $label = $label [0];
             }
             $html .= '<option value="' . $value . '">' . ($label) . "</option>\n";
         }
-        $optionHtml =  $this->option($table_code, $code,$selection);
+        $optionHtml = $this->option($table_code, $code, $selection);
         $html .= $optionHtml;
         $html .= "</select>";
         return $html;
@@ -177,15 +188,16 @@ class Dict implements DictInterface{
      * 根据数据字典生产HTML的option
      * @param $table_code
      * @param $code
-     * @param null $selection  选中的值
+     * @param null $selection 选中的值
      * @return string
      */
-    public function option($table_code,$code,$selection=null) {
-        $data = $this->get($table_code,$code);
+    public function option($table_code, $code, $selection = null)
+    {
+        $data = $this->get($table_code, $code);
         $html = "";
-        foreach ($data as $k=>$v) {
+        foreach ($data as $k => $v) {
             $html .= "<option value='$k'";
-            if($k==$selection && $selection!==null) {
+            if ($k == $selection && $selection !== null) {
                 $html .= " selected";
             }
             $html .= ">$v</option>";
@@ -200,7 +212,8 @@ class Dict implements DictInterface{
      * @return bool  返回成功失败
      * @throws CException
      */
-    public function updateCache() {
+    public function updateCache()
+    {
         return DictCache::update();
     }
 
