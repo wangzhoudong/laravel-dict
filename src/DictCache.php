@@ -17,9 +17,10 @@ class DictCache {
 
         foreach($oData as $key=>$value) {
             $dict[$value->dictionary_table_code][$value->dictionary_code][$value->value] = $value->name;
+            $valueKey[$value->dictionary_table_code][$value->dictionary_code][$value->value] = $value->key;
             $keyDict[$value->dictionary_table_code][$value->dictionary_code][$value->key] = ['value'=>$value->value,'name'=>$value->name];
         }
-        Cache::forever(config("dict.cache_key"),['get'=>$dict,'value'=>$keyDict]);
+        Cache::forever(config("dict.cache_key"),['get'=>$dict,'value'=>$keyDict,'valueKey'=>$valueKey]);
         return true;
     }
 
