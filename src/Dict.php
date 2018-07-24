@@ -101,6 +101,24 @@ class Dict implements DictInterface
     }
 
 
+    public function getKey($table_code, $code, $val = null)
+    {
+        $data = DictCache::get('valueKey');
+        if (isset($data[$table_code][$code])) {
+            $arr = $data[$table_code][$code];
+        } else {
+            return null;
+        }
+        if ($val !== null) {
+            if (array_key_exists($val, $arr)) {
+                return $arr[$val];
+            } else {
+                return null;
+            }
+        }
+        return $arr;
+    }
+
     /**
      * 根据key获取value
      * Dict::value('global','bool','no') 返回 “0”
@@ -143,6 +161,8 @@ class Dict implements DictInterface
         }
         return null;
     }
+
+
 
 
     /**
