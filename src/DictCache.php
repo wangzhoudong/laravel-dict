@@ -15,7 +15,7 @@ use Cache;
 class DictCache
 {
     private static $tagName = 'wangzd-dict-cache';
-
+    public static $cacheData;
     public static function update()
     {
         $oData = BaseDictionaryOptionModel::all();
@@ -41,10 +41,14 @@ class DictCache
 
     public static function get($type = 'get')
     {
+        if(isset(self::$cacheData)) {
+            return isset(self::$cacheData[$type]) ? self::$cacheData[$type] : null;
+        }
         if (!self::cache()->has(config("dict.cache_key"))) {
             self::update();
         }
         $data = self::cache()->get(config("dict.cache_key"));
+        self::$cacheData = $data;
         if (isset($data[$type])) {
             return $data[$type];
         }
